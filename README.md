@@ -1,20 +1,20 @@
-# Metinca Starter App
+# Capstone Project Nida Asyanah 💖
 
 Starter project Laravel untuk memulai development aplikasi baru dengan cepat.
 
 ## Persyaratan Sistem
 
-- PHP >= 8.4
-- Composer
-- MySQL
+-   PHP >= 8.4
+-   Composer
+-   MySQL
 
 ## Cara Clone Repository
 
 ### 1. Clone dari GitHub
 
 ```bash
-git clone https://github.com/username/metinca-starter-app.git
-cd metinca-starter-app
+git clone https://github.com/nidaasyanah011204-droid/capstone_project.git
+cd capstone_project
 ```
 
 ### 2. Install Dependencies
@@ -42,7 +42,7 @@ Edit file `.env` dan sesuaikan konfigurasi database:
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=metinca_db
+DB_DATABASE=capstone_project_db
 DB_USERNAME=root
 DB_PASSWORD=
 ```
