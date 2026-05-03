@@ -22,9 +22,10 @@ return [
             'route' => 'dashboard',
         ],
         [
-            'label' => 'standalone menu',
-            'icon' => 'bi bi-grid-1x2-fill',
-            'url' => '#',
+            'label' => 'Users',
+            'icon' => 'bi bi-people-fill',
+            'route' => 'users.index',
+            'active' => 'users.*',
         ],
         [
             'label' => 'Machining',
