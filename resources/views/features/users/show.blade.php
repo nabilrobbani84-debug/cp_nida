@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detail User')
+@section('title', 'Detail Pengguna')
 
 @section('content')
     <div class="page-heading">
@@ -13,13 +13,13 @@
                         style="width: 32px; height: 32px; padding: 0;">
                         <i class="bi bi-chevron-left" style="line-height: 0;"></i>
                     </a>
-                    <h3 class="mb-0">Detail User</h3>
+                    <h3 class="mb-0">Detail Pengguna</h3>
                 </div>
                 <div class="col-12 col-md-6 mt-md-0 mb-md-0 mb-4 mt-2">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-lg-end float-md-end float-start">
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Users</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Pengguna</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Detail</li>
                         </ol>
                     </nav>
@@ -32,7 +32,7 @@
                 <div class="card-body">
                     <div class="row g-4">
                         <div class="col-md-6">
-                            <h6 class="fw-bold text-muted">Name</h6>
+                            <h6 class="fw-bold text-muted">Nama Lengkap</h6>
                             <p class="fs-6 mb-0">{{ $user->name }}</p>
                         </div>
                         <div class="col-md-6">
@@ -40,11 +40,11 @@
                             <p class="fs-6 mb-0">{{ $user->email }}</p>
                         </div>
                         <div class="col-md-6">
-                            <h6 class="fw-bold text-muted">Created at</h6>
+                            <h6 class="fw-bold text-muted">Dibuat pada</h6>
                             <p class="fs-6 mb-0">{{ $user->created_at?->format('d F Y, H:i') }}</p>
                         </div>
                         <div class="col-md-6">
-                            <h6 class="fw-bold text-muted">Updated at</h6>
+                            <h6 class="fw-bold text-muted">Diperbarui pada</h6>
                             <p class="fs-6 mb-0">{{ $user->updated_at?->diffForHumans() }}</p>
                         </div>
                     </div>

@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Users')
+@section('title', 'Pengguna')
 
 @section('content')
     <div class="page-heading">
         <div class="page-title mb-4">
             <div class="row align-items-center">
                 <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Users</h3>
+                    <h3>Pengguna</h3>
                 </div>
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-lg-end mb-md-0 float-start mb-2">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Users</li>
+                            <li class="breadcrumb-item active" aria-current="page">Pengguna</li>
                         </ol>
                     </nav>
                 </div>
@@ -57,8 +57,8 @@
                                     {{-- <th class="text-center" style="width: 4rem;">No</th> --}}
                                     <th>Nama Lengkap</th>
                                     <th>Email</th>
-                                    <th>Created at</th>
-                                    <th class="text-center" style="width: 12rem;">Actions</th>
+                                    <th>Dibuat pada</th>
+                                    <th class="text-center" style="width: 12rem;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
