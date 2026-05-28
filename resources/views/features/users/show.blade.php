@@ -40,6 +40,10 @@
                             <p class="fs-6 mb-0">{{ $user->email }}</p>
                         </div>
                         <div class="col-md-6">
+                            <h6 class="fw-bold text-muted">Role</h6>
+                            <p class="fs-6 mb-0">{{ $user->role->role_name }}</p>
+                        </div>
+                        <div class="col-md-6">
                             <h6 class="fw-bold text-muted">Dibuat pada</h6>
                             <p class="fs-6 mb-0">{{ $user->created_at?->format('d F Y, H:i') }}</p>
                         </div>

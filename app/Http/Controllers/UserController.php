@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ class UserController extends Controller
         $search = $request->string('search')->trim()->value();
 
         $users = User::query()
+            ->with('role')
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($query) use ($search) {
                     $query->where('name', 'like', '%'.$search.'%')
@@ -33,7 +35,9 @@ class UserController extends Controller
 
     public function create(): View
     {
-        return view('features.users.create');
+        $roles = Role::query()->orderBy('role_name')->get();
+
+        return view('features.users.create', compact('roles'));
     }
 
     public function store(StoreUserRequest $request): RedirectResponse
@@ -47,12 +51,16 @@ class UserController extends Controller
 
     public function show(User $user): View
     {
+        $user->load('role');
+
         return view('features.users.show', compact('user'));
     }
 
     public function edit(User $user): View
     {
-        return view('features.users.edit', compact('user'));
+        $roles = Role::query()->orderBy('role_name')->get();
+
+        return view('features.users.edit', compact('user', 'roles'));
     }
 
     public function update(UpdateUserRequest $request, User $user): RedirectResponse

@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\RoleType;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -21,6 +23,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'id_role',
+        'id_branch',
     ];
 
     /**
@@ -44,5 +48,25 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class, 'id_role', 'id_role');
+    }
+
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class, 'id_branch', 'id_branch');
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return RoleType::tryFromId($this->id_role) === RoleType::SuperAdmin;
+    }
+
+    public function roleType(): ?RoleType
+    {
+        return RoleType::tryFromId($this->id_role);
     }
 }

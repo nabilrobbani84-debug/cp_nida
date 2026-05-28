@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 
@@ -87,6 +88,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
     Route::resource('users', UserController::class);
+
+    Route::resource('roles', RoleController::class)
+        ->only(['index'])
+        ->middleware('super_admin');
 
     // machining process
     Route::prefix('machining')->name('machining.')->group(function () {

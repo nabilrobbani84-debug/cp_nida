@@ -19,6 +19,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $user = $request->user();
+        $user?->loadMissing(['role', 'branch']);
+
+        $request->session()->put('username', $user?->name);
+        $request->session()->put('role_name', $user?->role?->role_name);
+        $request->session()->put('branch_name', $user?->branch?->branch_name ?? 'Pusat');
+
         return response()->noContent();
     }
 

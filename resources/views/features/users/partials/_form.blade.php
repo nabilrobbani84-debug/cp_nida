@@ -43,6 +43,30 @@
         </div>
     </div>
 
+    {{-- Role --}}
+    <div class="col-md-6">
+        <div class="form-group mb-3">
+            <label for="id_role" class="form-label fw-bold">
+                Role <span class="text-danger">*</span>
+            </label>
+            <select id="id_role" name="id_role"
+                class="form-select @error('id_role') is-invalid @enderror" required>
+                <option value="" disabled {{ old('id_role', $user?->id_role) ? '' : 'selected' }}>
+                    Pilih role
+                </option>
+                @foreach ($roles as $role)
+                    <option value="{{ $role->id_role }}"
+                        {{ (string) old('id_role', $user?->id_role) === (string) $role->id_role ? 'selected' : '' }}>
+                        {{ $role->role_name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('id_role')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
+
     {{-- Password --}}
     <div class="col-md-6">
         <div class="form-group mb-3">
