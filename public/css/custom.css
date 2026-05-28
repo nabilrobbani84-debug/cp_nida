@@ -1,0 +1,7 @@
+/* Override Bootstrap: tombol disabled tetap bisa di-hover agar cursor + title terlihat */
+.btn:disabled,
+.btn.disabled,
+button:disabled {
+    cursor: not-allowed !important;
+    pointer-events: auto !important;
+}

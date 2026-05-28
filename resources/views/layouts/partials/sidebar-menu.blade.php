@@ -26,7 +26,9 @@
             @php
                 $href =
                     isset($item['route']) ? route($item['route']) : ($item['url'] ?? '#');
-                $isActive = isset($item['route']) && request()->routeIs($item['route']);
+                $isActive = isset($item['active'])
+                    ? request()->routeIs($item['active'])
+                    : (isset($item['route']) && request()->routeIs($item['route']));
             @endphp
             <li class="sidebar-item {{ $isActive ? 'active' : '' }}">
                 <a href="{{ $href }}" class="sidebar-link">

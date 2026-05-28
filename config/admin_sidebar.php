@@ -15,27 +15,29 @@ return [
     */
     'menu' => [
         ['section' => 'Menu'],
-
         [
             'label' => 'Dashboard',
             'icon' => 'bi bi-grid-fill',
             'route' => 'dashboard',
         ],
+        
+        ['section' => 'Manajemen Pengguna'],
         [
-            'label' => 'standalone menu',
-            'icon' => 'bi bi-grid-1x2-fill',
-            'url' => '#',
+            'label' => 'Pengguna',
+            'icon' => 'bi bi-people-fill',
+            'route' => 'users.index',
+            'active' => 'users.*',
         ],
-        [
-            'label' => 'Machining',
-            'icon' => 'bi bi-stack',
-            'active' => 'machining.*',
-            'children' => [
-                ['label' => 'Monitoring', 'route' => 'machining.monitoring.index'],
-                ['label' => 'Product', 'url' => '#'],
-                ['label' => 'Process', 'url' => '#'],
-                ['label' => 'History', 'url' => '#'],
-            ],
-        ],
+        // [
+        //     'label' => 'Machining',
+        //     'icon' => 'bi bi-stack',
+        //     'active' => 'machining.*',
+        //     'children' => [
+        //         ['label' => 'Monitoring', 'route' => 'machining.monitoring.index'],
+        //         ['label' => 'Product', 'url' => '#'],
+        //         ['label' => 'Process', 'url' => '#'],
+        //         ['label' => 'History', 'url' => '#'],
+        //     ],
+        // ],
     ],
 ];
