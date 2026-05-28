@@ -43,7 +43,7 @@
                         <div class="d-flex align-items-center">
                             <!-- ms-lg-auto: Di desktop, ini akan mendorong tombol ke paling kanan -->
                             <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm w-100 w-lg-auto ms-lg-auto">
-                                <i class="bi bi-plus-lg me-1"></i> Tambah User
+                                <i class="bi bi-plus-lg me-1"></i> Tambah Pengguna
                             </a>
                         </div>
 
@@ -57,6 +57,7 @@
                                     {{-- <th class="text-center" style="width: 4rem;">No</th> --}}
                                     <th>Nama Lengkap</th>
                                     <th>Email</th>
+                                    <th>Role</th>
                                     <th>Dibuat pada</th>
                                     <th class="text-center" style="width: 12rem;">Aksi</th>
                                 </tr>
@@ -69,6 +70,7 @@
                                         </td> --}}
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
+                                        <td>{{ $user->role->role_name }}</td>
                                         <td class="text-nowrap">{{ $user->created_at?->format('d F Y, H:i') }}</td>
                                         <td class="d-flex justify-content-center align-items-center gap-2">
                                             <a href="{{ route('users.show', $user) }}" class="btn btn-sm btn-light-warning"

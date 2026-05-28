@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Ubah User')
+@section('title', 'Ubah Pengguna')
 
 @section('content')
     <div class="page-heading">
@@ -13,7 +13,7 @@
                         style="width: 32px; height: 32px; padding: 0;">
                         <i class="bi bi-chevron-left" style="line-height: 0;"></i>
                     </a>
-                    <h3 class="mb-0">Ubah User</h3>
+                    <h3 class="mb-0">Ubah Pengguna</h3>
                 </div>
                 <div class="col-12 col-md-6 mt-md-0 mb-md-0 mb-4 mt-2">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-lg-end float-md-end float-start">
