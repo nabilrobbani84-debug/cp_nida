@@ -24,10 +24,14 @@ class UpdateUserRequest extends FormRequest
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('users', 'email')->ignore($user->id),
+                Rule::unique('users', 'email')->ignore($user->id)->whereNull('deleted_at'),
             ],
             'password' => ['nullable', 'confirmed', Password::defaults()],
-            'id_role' => ['required', 'integer', 'exists:roles,id_role'],
+            'id_role' => [
+                'required',
+                'integer',
+                Rule::exists('roles', 'id_role')->whereNull('deleted_at'),
+            ],
         ];
     }
 }

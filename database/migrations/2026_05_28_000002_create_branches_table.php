@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('branch_name');
             $table->string('location');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -21,4 +22,3 @@ return new class extends Migration
         Schema::dropIfExists('branches');
     }
 };
-

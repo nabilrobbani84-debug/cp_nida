@@ -19,6 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
             'super_admin' => \App\Http\Middleware\EnsureSuperAdmin::class,
+            'operator_produksi' => \App\Http\Middleware\EnsureOperatorProduksi::class,
+            'branch_production_access' => \App\Http\Middleware\EnsureBranchProductionAccess::class,
         ]);
 
         //

@@ -3,6 +3,12 @@
 use App\Enums\RoleType;
 
 $superAdminOnly = [RoleType::SuperAdmin->value];
+$operatorProduksiOnly = [RoleType::OperatorProduksi->value];
+$kepalaCabangOnly = [RoleType::KepalaCabang->value];
+$productionHistoryRoles = [
+    RoleType::OperatorProduksi->value,
+    RoleType::KepalaCabang->value,
+];
 
 return [
     /*
@@ -27,7 +33,7 @@ return [
             'route' => 'dashboard',
         ],
 
-        // ── Manajemen pengguna (Super Admin) ────────────────────────
+        // ── Manajemen Pengguna (Super Admin) ────────────────────────────────
         ['section' => 'Manajemen Pengguna'],
         [
             'label' => 'Pengguna',
@@ -42,6 +48,54 @@ return [
             'route' => 'roles.index',
             'active' => 'roles.*',
             'role_ids' => $superAdminOnly,
+        ],
+
+        // ── Master Data (Super Admin) ────────────────────────────────
+        ['section' => 'Master Data'],
+        [
+            'label' => 'Cabang',
+            'icon' => 'bi bi-building',
+            'route' => 'branches.index',
+            'active' => 'branches.*',
+            'role_ids' => $superAdminOnly,
+        ],
+        [
+            'label' => 'Jenis Produk',
+            'icon' => 'bi bi-box-seam',
+            'route' => 'product-types.index',
+            'active' => 'product-types.*',
+            'role_ids' => $superAdminOnly,
+        ],
+        [
+            'label' => 'Unit',
+            'icon' => 'bi bi-rulers',
+            'route' => 'units.index',
+            'active' => 'units.*',
+            'role_ids' => $superAdminOnly,
+        ],
+        [
+            'label' => 'Produk',
+            'icon' => 'bi bi-box2-fill',
+            'route' => 'products.index',
+            'active' => 'products.*',
+            'role_ids' => $superAdminOnly,
+        ],
+
+        // ── Produksi (Operator & Kepala Cabang) ─────────────────────
+        ['section' => 'Produksi'],
+        [
+            'label' => 'Input Produksi Harian',
+            'icon' => 'bi bi-clipboard-plus',
+            'route' => 'branch-productions.create',
+            'active' => 'branch-productions.create',
+            'role_ids' => $operatorProduksiOnly,
+        ],
+        [
+            'label' => 'Riwayat Produksi',
+            'icon' => 'bi bi-clock-history',
+            'route' => 'branch-productions.index',
+            'active' => ['branch-productions.index', 'branch-productions.show'],
+            'role_ids' => $productionHistoryRoles,
         ],
 
         // ── Machining (submenu) ─────────────────────────────────────

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class StoreUserRequest extends FormRequest
@@ -16,9 +17,19 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->whereNull('deleted_at'),
+            ],
             'password' => ['required', 'confirmed', Password::defaults()],
-            'id_role' => ['required', 'integer', 'exists:roles,id_role'],
+            'id_role' => [
+                'required',
+                'integer',
+                Rule::exists('roles', 'id_role')->whereNull('deleted_at'),
+            ],
         ];
     }
 }

@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\BranchController;
+use App\Http\Controllers\BranchProductionController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 
@@ -92,6 +97,32 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('roles', RoleController::class)
         ->only(['index'])
         ->middleware('super_admin');
+
+    Route::resource('branches', BranchController::class)
+        ->middleware('super_admin');
+
+    Route::resource('product-types', ProductTypeController::class)
+        ->middleware('super_admin');
+
+    Route::resource('units', UnitController::class)
+        ->middleware('super_admin');
+
+    Route::resource('products', ProductController::class)
+        ->middleware('super_admin');
+
+    Route::middleware('operator_produksi')->group(function () {
+        Route::get('branch-productions/create', [BranchProductionController::class, 'create'])
+            ->name('branch-productions.create');
+        Route::post('branch-productions', [BranchProductionController::class, 'store'])
+            ->name('branch-productions.store');
+    });
+
+    Route::middleware('branch_production_access')->group(function () {
+        Route::get('branch-productions', [BranchProductionController::class, 'index'])
+            ->name('branch-productions.index');
+        Route::get('branch-productions/{branchProduction}', [BranchProductionController::class, 'show'])
+            ->name('branch-productions.show');
+    });
 
     // machining process
     Route::prefix('machining')->name('machining.')->group(function () {
