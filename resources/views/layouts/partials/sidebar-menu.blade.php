@@ -25,6 +25,14 @@
         return $canSeeMenuItem($item);
     };
 
+    $isMenuItemActive = function (array $item): bool {
+        if (isset($item['active'])) {
+            return request()->routeIs($item['active']);
+        }
+
+        return isset($item['route']) && request()->routeIs($item['route']);
+    };
+
     $sectionHasVisibleItems = function (int $sectionIndex) use ($menuItems, $isMenuItemVisible): bool {
         for ($i = $sectionIndex + 1; $i < $menuItems->count(); $i++) {
             $next = $menuItems[$i];
@@ -53,7 +61,7 @@
             @continue
         @elseif (! empty($item['children']))
             <li
-                class="sidebar-item has-sub {{ isset($item['active']) && request()->routeIs($item['active']) ? 'active' : '' }}">
+                class="sidebar-item has-sub {{ $isMenuItemActive($item) ? 'active' : '' }}">
                 <a href="#" class="sidebar-link">
                     <i class="{{ $item['icon'] ?? 'bi bi-circle' }}"></i>
                     <span>{{ $item['label'] }}</span>
@@ -78,9 +86,7 @@
             @php
                 $href =
                     isset($item['route']) ? route($item['route']) : ($item['url'] ?? '#');
-                $isActive = isset($item['active'])
-                    ? request()->routeIs($item['active'])
-                    : (isset($item['route']) && request()->routeIs($item['route']));
+                $isActive = $isMenuItemActive($item);
             @endphp
             <li class="sidebar-item {{ $isActive ? 'active' : '' }}">
                 <a href="{{ $href }}" class="sidebar-link">

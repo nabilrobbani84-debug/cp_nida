@@ -8,9 +8,9 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->bigIncrements('id_role');
-            $table->string('role_name');
+        Schema::create('product_types', function (Blueprint $table) {
+            $table->bigIncrements('id_product_type');
+            $table->string('name');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -18,6 +18,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('product_types');
     }
 };

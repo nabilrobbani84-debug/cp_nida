@@ -6,13 +6,14 @@ use App\Enums\RoleType;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -52,12 +53,12 @@ class User extends Authenticatable
 
     public function role(): BelongsTo
     {
-        return $this->belongsTo(Role::class, 'id_role', 'id_role');
+        return $this->belongsTo(Role::class, 'id_role', 'id_role')->withTrashed();
     }
 
     public function branch(): BelongsTo
     {
-        return $this->belongsTo(Branch::class, 'id_branch', 'id_branch');
+        return $this->belongsTo(Branch::class, 'id_branch', 'id_branch')->withTrashed();
     }
 
     public function isSuperAdmin(): bool
@@ -68,5 +69,20 @@ class User extends Authenticatable
     public function roleType(): ?RoleType
     {
         return RoleType::tryFromId($this->id_role);
+    }
+
+    public function isOperatorProduksi(): bool
+    {
+        return RoleType::tryFromId($this->id_role) === RoleType::OperatorProduksi;
+    }
+
+    public function isKepalaCabang(): bool
+    {
+        return RoleType::tryFromId($this->id_role) === RoleType::KepalaCabang;
+    }
+
+    public function canAccessBranchProduction(): bool
+    {
+        return $this->isOperatorProduksi() || $this->isKepalaCabang();
     }
 }
