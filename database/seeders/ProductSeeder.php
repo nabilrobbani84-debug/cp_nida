@@ -16,42 +16,42 @@ class ProductSeeder extends Seeder
 
         $products = [
             [
-                'code' => 'PRD-C1-001',
+                'code' => 'PRD-001',
                 'name' => 'Valve Body Casting',
                 'product_type_name' => 'Valve (Katup Industri)',
                 'unit_name' => 'Pcs',
                 'hs_code' => '8481.80.90',
             ],
             [
-                'code' => 'PRD-C1-002',
+                'code' => 'PRD-002',
                 'name' => 'Impeller Sand Cast',
                 'product_type_name' => 'Pengecoran Logam (Investment Casting & Sand Casting)',
                 'unit_name' => 'Kg',
                 'hs_code' => '8413.91.00',
             ],
             [
-                'code' => 'PRD-C1-003',
+                'code' => 'PRD-003',
                 'name' => 'Housing Permanent Mould',
                 'product_type_name' => 'Permanent Mould',
                 'unit_name' => 'Set',
                 'hs_code' => '8413.91.00',
             ],
             [
-                'code' => 'PRD-C2-001',
+                'code' => 'PRD-004',
                 'name' => 'Gate Valve Machined',
                 'product_type_name' => 'Pemesinan (Machining)',
                 'unit_name' => 'Pcs',
                 'hs_code' => '8481.80.10',
             ],
             [
-                'code' => 'PRD-C2-002',
+                'code' => 'PRD-005',
                 'name' => 'Investment Cast Bracket',
                 'product_type_name' => 'Pengecoran Logam (Investment Casting & Sand Casting)',
                 'unit_name' => 'Box',
                 'hs_code' => '7325.99.00',
             ],
             [
-                'code' => 'PRD-C2-003',
+                'code' => 'PRD-006',
                 'name' => 'Industrial Valve Assembly',
                 'product_type_name' => 'Valve (Katup Industri)',
                 'unit_name' => 'Set',

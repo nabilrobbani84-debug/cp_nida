@@ -85,4 +85,9 @@ class User extends Authenticatable
     {
         return $this->isOperatorProduksi() || $this->isKepalaCabang();
     }
+
+    public function isAdminPusat(): bool
+    {
+        return RoleType::tryFromId($this->id_role) === RoleType::AdminPusat;
+    }
 }

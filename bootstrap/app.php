@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'super_admin' => \App\Http\Middleware\EnsureSuperAdmin::class,
             'operator_produksi' => \App\Http\Middleware\EnsureOperatorProduksi::class,
             'branch_production_access' => \App\Http\Middleware\EnsureBranchProductionAccess::class,
+            'admin_pusat' => \App\Http\Middleware\EnsureAdminPusat::class,
         ]);
 
         //

@@ -12,12 +12,6 @@
     </div>
 @endif
 
-<div class="alert alert-light-primary">
-    <i class="bi bi-building me-1"></i>
-    Cabang: <strong>{{ $branchName ?? auth()->user()->branch?->branch_name }}</strong>
-    <span class="text-muted small">(otomatis dari akun Anda)</span>
-</div>
-
 <div class="row">
     <div class="col-md-6">
         <div class="form-group mb-3">
