@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\BranchProductionController;
+use App\Http\Controllers\BranchProductionVerificationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\RoleController;
@@ -122,6 +123,14 @@ Route::middleware(['auth'])->group(function () {
             ->name('branch-productions.index');
         Route::get('branch-productions/{branchProduction}', [BranchProductionController::class, 'show'])
             ->name('branch-productions.show');
+    });
+
+    Route::middleware('admin_pusat')->prefix('branch-production-verifications')->name('branch-production-verifications.')->group(function () {
+        Route::get('/', [BranchProductionVerificationController::class, 'index'])->name('index');
+        Route::patch('{branchProduction}/validate', [BranchProductionVerificationController::class, 'validate'])
+            ->name('validate');
+        Route::patch('{branchProduction}/reject', [BranchProductionVerificationController::class, 'reject'])
+            ->name('reject');
     });
 
     // machining process

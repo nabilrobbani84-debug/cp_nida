@@ -9,6 +9,7 @@ $productionHistoryRoles = [
     RoleType::OperatorProduksi->value,
     RoleType::KepalaCabang->value,
 ];
+$adminPusatOnly = [RoleType::AdminPusat->value];
 
 return [
     /*
@@ -79,6 +80,16 @@ return [
             'route' => 'products.index',
             'active' => 'products.*',
             'role_ids' => $superAdminOnly,
+        ],
+
+        // ── Verifikasi (Admin Pusat) ────────────────────────────────
+        ['section' => 'Verifikasi Pusat'],
+        [
+            'label' => 'Verifikasi Produksi',
+            'icon' => 'bi bi-patch-check-fill',
+            'route' => 'branch-production-verifications.index',
+            'active' => 'branch-production-verifications.*',
+            'role_ids' => $adminPusatOnly,
         ],
 
         // ── Produksi (Operator & Kepala Cabang) ─────────────────────

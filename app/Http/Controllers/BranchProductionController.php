@@ -15,11 +15,16 @@ class BranchProductionController extends Controller
     public function index(Request $request): View
     {
         $search = $request->string('search')->trim()->value();
+        $status = $request->string('status')->trim()->value();
         $branchId = $request->user()->id_branch;
 
         $productions = BranchProduction::query()
             ->with(['product', 'branch'])
             ->where('id_branch', $branchId)
+            ->when(
+                filled($status) && BranchProductionStatus::tryFrom($status),
+                fn ($q) => $q->where('status', $status)
+            )
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($query) use ($search) {
                     $query->whereHas('product', fn ($q) => $q->where('name', 'like', '%'.$search.'%')
@@ -35,6 +40,8 @@ class BranchProductionController extends Controller
         return view('features.branch-productions.index', [
             'productions' => $productions,
             'search' => $search,
+            'status' => $status,
+            'statusOptions' => BranchProductionStatus::cases(),
             'readOnly' => $request->user()->isKepalaCabang(),
         ]);
     }
