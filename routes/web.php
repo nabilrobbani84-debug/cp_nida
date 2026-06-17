@@ -93,58 +93,23 @@ Route::middleware(['auth'])->group(function () {
     // dashboard
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
+    // User management (optional/accessible to all for testing, or just dashboard)
     Route::resource('users', UserController::class);
 
-    Route::resource('roles', RoleController::class)
-        ->only(['index'])
-        ->middleware('super_admin');
-
-    Route::resource('branches', BranchController::class)
-        ->middleware('super_admin');
-
-    Route::resource('product-types', ProductTypeController::class)
-        ->middleware('super_admin');
-
-    Route::resource('units', UnitController::class)
-        ->middleware('super_admin');
-
-    Route::resource('products', ProductController::class)
-        ->middleware('super_admin');
-
-    Route::middleware('operator_produksi')->group(function () {
-        Route::get('branch-productions/create', [BranchProductionController::class, 'create'])
-            ->name('branch-productions.create');
-        Route::post('branch-productions', [BranchProductionController::class, 'store'])
-            ->name('branch-productions.store');
+    // ── Divisi PPC ──────────────────────────────────────────────
+    Route::middleware('divisi_ppc')->group(function () {
+        Route::resource('shipping-plans', \App\Http\Controllers\ShippingPlanController::class);
     });
 
-    Route::middleware('branch_production_access')->group(function () {
-        Route::get('branch-productions', [BranchProductionController::class, 'index'])
-            ->name('branch-productions.index');
-        Route::get('branch-productions/{branchProduction}', [BranchProductionController::class, 'show'])
-            ->name('branch-productions.show');
+    // ── Divisi Gudang ───────────────────────────────────────────
+    Route::middleware('divisi_gudang')->group(function () {
+        Route::resource('packing-lists', \App\Http\Controllers\PackingListController::class);
     });
 
-    Route::middleware('admin_pusat')->prefix('branch-production-verifications')->name('branch-production-verifications.')->group(function () {
-        Route::get('/', [BranchProductionVerificationController::class, 'index'])->name('index');
-        Route::patch('{branchProduction}/validate', [BranchProductionVerificationController::class, 'validate'])
-            ->name('validate');
-        Route::patch('{branchProduction}/reject', [BranchProductionVerificationController::class, 'reject'])
-            ->name('reject');
-    });
-
-    // machining process
-    Route::prefix('machining')->name('machining.')->group(function () {
-
-        // monitoring
-        Route::prefix('monitoring')->name('monitoring.')->group(function () {
-
-            Route::get('/', function () {
-                return view('machining.monitoring.index');
-            })->name('index');
-
-        });
-
+    // ── Divisi Ekspor ───────────────────────────────────────────
+    Route::middleware('divisi_ekspor')->group(function () {
+        Route::resource('export-invoices', \App\Http\Controllers\ExportInvoiceController::class);
+        Route::resource('vessel-bookings', \App\Http\Controllers\VesselBookingController::class);
     });
 
 });

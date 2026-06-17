@@ -8,20 +8,16 @@ namespace App\Enums;
  */
 enum RoleType: int
 {
-    case SuperAdmin = 1;
-    case AdminPusat = 2;
-    case KepalaCabang = 3;
-    case OperatorProduksi = 4;
-    case TimEkspor = 5;
+    case DivisiPPC = 1;
+    case DivisiEkspor = 2;
+    case DivisiGudang = 3;
 
     public function label(): string
     {
         return match ($this) {
-            self::SuperAdmin => 'Super Admin',
-            self::AdminPusat => 'Admin Pusat',
-            self::KepalaCabang => 'Kepala Cabang',
-            self::OperatorProduksi => 'Operator Produksi',
-            self::TimEkspor => 'Tim Ekspor',
+            self::DivisiPPC => 'Divisi PPC',
+            self::DivisiEkspor => 'Divisi Ekspor',
+            self::DivisiGudang => 'Divisi Gudang',
         };
     }
 

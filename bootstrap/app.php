@@ -18,10 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
-            'super_admin' => \App\Http\Middleware\EnsureSuperAdmin::class,
-            'operator_produksi' => \App\Http\Middleware\EnsureOperatorProduksi::class,
-            'branch_production_access' => \App\Http\Middleware\EnsureBranchProductionAccess::class,
-            'admin_pusat' => \App\Http\Middleware\EnsureAdminPusat::class,
+            'divisi_ppc' => \App\Http\Middleware\EnsureDivisiPPC::class,
+            'divisi_ekspor' => \App\Http\Middleware\EnsureDivisiEkspor::class,
+            'divisi_gudang' => \App\Http\Middleware\EnsureDivisiGudang::class,
         ]);
 
         //

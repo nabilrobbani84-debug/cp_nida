@@ -18,10 +18,6 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             BranchSeeder::class,
             UserSeeder::class,
-            ProductTypeSeeder::class,
-            UnitSeeder::class,
-            ProductSeeder::class,
-            BranchProductionSeeder::class,
         ]);
     }
 }

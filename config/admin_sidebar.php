@@ -2,14 +2,9 @@
 
 use App\Enums\RoleType;
 
-$superAdminOnly = [RoleType::SuperAdmin->value];
-$operatorProduksiOnly = [RoleType::OperatorProduksi->value];
-$kepalaCabangOnly = [RoleType::KepalaCabang->value];
-$productionHistoryRoles = [
-    RoleType::OperatorProduksi->value,
-    RoleType::KepalaCabang->value,
-];
-$adminPusatOnly = [RoleType::AdminPusat->value];
+$divisiPPCOnly = [RoleType::DivisiPPC->value];
+$divisiEksporOnly = [RoleType::DivisiEkspor->value];
+$divisiGudangOnly = [RoleType::DivisiGudang->value];
 
 return [
     /*
@@ -34,92 +29,41 @@ return [
             'route' => 'dashboard',
         ],
 
-        // ── Manajemen Pengguna (Super Admin) ────────────────────────────────
-        ['section' => 'Manajemen Pengguna'],
+        // ── Divisi PPC ──────────────────────────────────────────────
+        ['section' => 'Divisi PPC'],
         [
-            'label' => 'Pengguna',
-            'icon' => 'bi bi-people-fill',
-            'route' => 'users.index',
-            'active' => 'users.*',
-            'role_ids' => $superAdminOnly,
-        ],
-        [
-            'label' => 'Roles',
-            'icon' => 'bi bi-shield-lock-fill',
-            'route' => 'roles.index',
-            'active' => 'roles.*',
-            'role_ids' => $superAdminOnly,
+            'label' => 'Rencana Kirim',
+            'icon' => 'bi bi-calendar-event',
+            'route' => 'shipping-plans.index',
+            'active' => 'shipping-plans.*',
+            'role_ids' => $divisiPPCOnly,
         ],
 
-        // ── Master Data (Super Admin) ────────────────────────────────
-        ['section' => 'Master Data'],
+        // ── Divisi Gudang ───────────────────────────────────────────
+        ['section' => 'Divisi Gudang'],
         [
-            'label' => 'Cabang',
-            'icon' => 'bi bi-building',
-            'route' => 'branches.index',
-            'active' => 'branches.*',
-            'role_ids' => $superAdminOnly,
-        ],
-        [
-            'label' => 'Jenis Produk',
+            'label' => 'Packing List',
             'icon' => 'bi bi-box-seam',
-            'route' => 'product-types.index',
-            'active' => 'product-types.*',
-            'role_ids' => $superAdminOnly,
-        ],
-        [
-            'label' => 'Unit',
-            'icon' => 'bi bi-rulers',
-            'route' => 'units.index',
-            'active' => 'units.*',
-            'role_ids' => $superAdminOnly,
-        ],
-        [
-            'label' => 'Produk',
-            'icon' => 'bi bi-box2-fill',
-            'route' => 'products.index',
-            'active' => 'products.*',
-            'role_ids' => $superAdminOnly,
+            'route' => 'packing-lists.index',
+            'active' => 'packing-lists.*',
+            'role_ids' => $divisiGudangOnly,
         ],
 
-        // ── Verifikasi (Admin Pusat) ────────────────────────────────
-        ['section' => 'Verifikasi Pusat'],
+        // ── Divisi Ekspor ───────────────────────────────────────────
+        ['section' => 'Divisi Ekspor'],
         [
-            'label' => 'Verifikasi Produksi',
-            'icon' => 'bi bi-patch-check-fill',
-            'route' => 'branch-production-verifications.index',
-            'active' => 'branch-production-verifications.*',
-            'role_ids' => $adminPusatOnly,
-        ],
-
-        // ── Produksi (Operator & Kepala Cabang) ─────────────────────
-        ['section' => 'Produksi'],
-        [
-            'label' => 'Input Produksi Harian',
-            'icon' => 'bi bi-clipboard-plus',
-            'route' => 'branch-productions.create',
-            'active' => 'branch-productions.create',
-            'role_ids' => $operatorProduksiOnly,
+            'label' => 'Invoice Ekspor',
+            'icon' => 'bi bi-receipt',
+            'route' => 'export-invoices.index',
+            'active' => 'export-invoices.*',
+            'role_ids' => $divisiEksporOnly,
         ],
         [
-            'label' => 'Riwayat Produksi',
-            'icon' => 'bi bi-clock-history',
-            'route' => 'branch-productions.index',
-            'active' => ['branch-productions.index', 'branch-productions.show'],
-            'role_ids' => $productionHistoryRoles,
+            'label' => 'Booking Kapal',
+            'icon' => 'bi bi-ship',
+            'route' => 'vessel-bookings.index',
+            'active' => 'vessel-bookings.*',
+            'role_ids' => $divisiEksporOnly,
         ],
-
-        // ── Machining (submenu) ─────────────────────────────────────
-        // [
-        //     'label' => 'Machining',
-        //     'icon' => 'bi bi-stack',
-        //     'active' => 'machining.*',
-        //     'children' => [
-        //         ['label' => 'Monitoring', 'route' => 'machining.monitoring.index'],
-        //         ['label' => 'Product', 'url' => '#'],
-        //         ['label' => 'Process', 'url' => '#'],
-        //         ['label' => 'History', 'url' => '#'],
-        //     ],
-        // ],
     ],
 ];

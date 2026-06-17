@@ -16,55 +16,28 @@ class UserSeeder extends Seeder
 
         $users = [
             [
-                'name' => 'Super Admin',
-                'email' => 'superadmin@example.com',
+                'name' => 'User PPC',
+                'email' => 'ppc@example.com',
                 'password' => 'password',
-                'role' => RoleType::SuperAdmin,
+                'role' => RoleType::DivisiPPC,
                 'branch_name' => null,
             ],
             [
-                'name' => 'Admin Pusat',
-                'email' => 'adminpusat@example.com',
+                'name' => 'User Ekspor',
+                'email' => 'ekspor@example.com',
                 'password' => 'password',
-                'role' => RoleType::AdminPusat,
+                'role' => RoleType::DivisiEkspor,
                 'branch_name' => null,
             ],
             [
-                'name' => 'Kepala Cabang 1',
-                'email' => 'kepalacabang1@example.com',
+                'name' => 'User Gudang',
+                'email' => 'gudang@example.com',
                 'password' => 'password',
-                'role' => RoleType::KepalaCabang,
-                'branch_name' => 'Cabang 1',
-            ],
-            [
-                'name' => 'Kepala Cabang 2',
-                'email' => 'kepalacabang2@example.com',
-                'password' => 'password',
-                'role' => RoleType::KepalaCabang,
-                'branch_name' => 'Cabang 2',
-            ],
-            [
-                'name' => 'Operator Cabang 1',
-                'email' => 'operatorcabang1@example.com',
-                'password' => 'password',
-                'role' => RoleType::OperatorProduksi,
-                'branch_name' => 'Cabang 1',
-            ],
-            [
-                'name' => 'Operator Cabang 2',
-                'email' => 'operatorcabang2@example.com',
-                'password' => 'password',
-                'role' => RoleType::OperatorProduksi,
-                'branch_name' => 'Cabang 2',
-            ],
-            [
-                'name' => 'Tim Ekspor',
-                'email' => 'timekspor@example.com',
-                'password' => 'password',
-                'role' => RoleType::TimEkspor,
-                'branch_name' => null,
+                'role' => RoleType::DivisiGudang,
+                'branch_name' => 'Pusat',
             ],
         ];
+
 
         foreach ($users as $u) {
             $branchRow = $u['branch_name'] ? $branch($u['branch_name']) : null;
