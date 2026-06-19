@@ -28,6 +28,12 @@ return [
             'icon' => 'bi bi-grid-fill',
             'route' => 'dashboard',
         ],
+        [
+            'label' => 'Arsip Dokumen Digital',
+            'icon' => 'bi bi-archive-fill',
+            'route' => 'document-archive',
+            'active' => 'document-archive',
+        ],
 
         // ── Divisi PPC ──────────────────────────────────────────────
         ['section' => 'Divisi PPC'],

@@ -47,7 +47,12 @@
                             </td>
                             <td>
                                 @if($plan->packingList)
-                                    {{ $plan->packingList->packing_list_number }}
+                                    <div><strong>{{ $plan->packingList->packing_list_number }}</strong></div>
+                                    <div class="text-muted" style="font-size: 0.85rem; line-height: 1.2;">
+                                        <strong>Kemasan:</strong> {{ $plan->packingList->packaging_details }}<br>
+                                        <strong>Berat:</strong> {{ $plan->packingList->weight }} kg | 
+                                        <strong>Dimensi:</strong> {{ $plan->packingList->dimensions }}
+                                    </div>
                                 @else
                                     <span class="text-muted">Belum ada</span>
                                 @endif

@@ -29,6 +29,9 @@ class PackingListController extends Controller
         $request->validate([
             'shipping_plan_id' => 'required|exists:shipping_plans,id',
             'packing_list_number' => 'required|string|unique:packing_lists',
+            'packaging_details' => 'required|string',
+            'weight' => 'required|numeric|min:0.01',
+            'dimensions' => 'required|string',
         ]);
 
         $plan = \App\Models\ShippingPlan::findOrFail($request->shipping_plan_id);
@@ -36,6 +39,9 @@ class PackingListController extends Controller
         \App\Models\PackingList::create([
             'shipping_plan_id' => $plan->id,
             'packing_list_number' => $request->packing_list_number,
+            'packaging_details' => $request->packaging_details,
+            'weight' => $request->weight,
+            'dimensions' => $request->dimensions,
             'created_by' => $request->user()->id,
         ]);
 

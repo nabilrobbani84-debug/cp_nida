@@ -92,6 +92,7 @@ Route::middleware(['auth'])->group(function () {
 
     // dashboard
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    Route::get('/document-archive', [DashboardController::class, 'archive'])->name('document-archive');
 
     // User management (optional/accessible to all for testing, or just dashboard)
     Route::resource('users', UserController::class);

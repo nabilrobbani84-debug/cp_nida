@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('shipping_plan_id')->constrained('shipping_plans')->onDelete('cascade');
             $table->string('packing_list_number')->unique();
+            $table->text('packaging_details')->nullable();
+            $table->double('weight')->nullable();
+            $table->string('dimensions')->nullable();
             $table->foreignId('created_by')->constrained('users');
             $table->timestamps();
         });

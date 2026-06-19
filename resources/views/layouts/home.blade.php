@@ -117,7 +117,7 @@
 
                         <!-- 8.1 - 8.3 (no sub-category, langsung menu) -->
                         <div class="menu-grid">
-                            <a href="{{ route('login') }}" class="menu-item">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal" class="menu-item">
                                 <div class="menu-icon">
                                     <i class="bi bi-shield-lock-fill"></i>
                                 </div>
@@ -951,8 +951,131 @@
             </div>
         </div>
     </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 15px; overflow: hidden;">
+                <div class="modal-header bg-primary text-white border-0 py-3">
+                    <h5 class="modal-title font-bold" id="loginModalLabel">
+                        <i class="bi bi-shield-lock-fill me-2"></i>Sign In - Metinca Apps
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-light text-primary rounded-circle mb-2" style="width: 60px; height: 60px;">
+                            <i class="bi bi-gear-fill fs-2"></i>
+                        </div>
+                        <h5 class="font-bold mb-1">Metinca Starter App</h5>
+                        <p class="text-muted small">Silakan masuk menggunakan akun divisi Anda</p>
+                    </div>
+
+                    <!-- Alert Error -->
+                    <div class="alert alert-danger d-none" id="modalErrorAlert" role="alert">
+                        <i class="bi bi-exclamation-circle-fill me-2"></i>
+                        <span id="modalErrorMessage">Username atau password salah!</span>
+                    </div>
+
+                    <form id="modalLoginForm">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="modalUsername" class="form-label font-bold text-muted small">
+                                <i class="bi bi-person-fill me-1"></i>Username atau Email
+                            </label>
+                            <input type="text" name="email" class="form-control" id="modalUsername" placeholder="Masukkan username atau email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modalPassword" class="form-label font-bold text-muted small">
+                                <i class="bi bi-lock-fill me-1"></i>Password
+                            </label>
+                            <div class="input-group">
+                                <input type="password" name="password" class="form-control" id="modalPassword" placeholder="Masukkan password" required>
+                                <button class="btn btn-outline-secondary" type="button" id="modalTogglePassword">
+                                    <i class="bi bi-eye" id="modalToggleIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="modalRemember">
+                                <label class="form-check-label text-muted small" for="modalRemember">
+                                    Ingat saya
+                                </label>
+                            </div>
+                            <a href="#" class="text-decoration-none small text-primary">Lupa password?</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2 font-bold" id="modalBtnLogin">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Masuk ke Dashboard
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.all.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.getElementById('modalTogglePassword');
+            const passwordInput = document.getElementById('modalPassword');
+            const toggleIcon = document.getElementById('modalToggleIcon');
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function() {
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        toggleIcon.classList.replace('bi-eye', 'bi-eye-slash');
+                    } else {
+                        passwordInput.type = 'password';
+                        toggleIcon.classList.replace('bi-eye-slash', 'bi-eye');
+                    }
+                });
+            }
+
+            const loginForm = document.getElementById('modalLoginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const btn = document.getElementById('modalBtnLogin');
+                    btn.disabled = true;
+                    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Memproses...';
+
+                    const errorAlert = document.getElementById('modalErrorAlert');
+                    errorAlert.classList.add('d-none');
+
+                    const formData = new FormData(this);
+
+                    axios.post('{{ route('login.store') }}', formData)
+                        .then(response => {
+                            Swal.fire({
+                                title: 'Login Berhasil',
+                                text: 'Selamat datang kembali!',
+                                icon: 'success',
+                                confirmButtonText: 'Lanjutkan',
+                                confirmButtonColor: '#435ebe'
+                            }).then(() => {
+                                window.location.href = '{{ route('dashboard') }}';
+                            });
+                        })
+                        .catch(error => {
+                            btn.disabled = false;
+                            btn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Masuk ke Dashboard';
+                            
+                            errorAlert.classList.remove('d-none');
+                            const msg = error.response && error.response.data && error.response.data.message 
+                                ? error.response.data.message 
+                                : 'Gagal login. Periksa username dan password Anda.';
+                            document.getElementById('modalErrorMessage').textContent = msg;
+                        });
+                });
+            }
+        });
     </script>
     @stack('scripts')
 </body>

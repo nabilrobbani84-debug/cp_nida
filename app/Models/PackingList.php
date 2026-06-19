@@ -9,7 +9,7 @@ class PackingList extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['shipping_plan_id', 'packing_list_number', 'created_by'];
+    protected $fillable = ['shipping_plan_id', 'packing_list_number', 'packaging_details', 'weight', 'dimensions', 'created_by'];
 
     public function shippingPlan()
     {
