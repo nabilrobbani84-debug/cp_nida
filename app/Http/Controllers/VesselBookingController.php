@@ -18,8 +18,10 @@ class VesselBookingController extends Controller
         $planId = $request->get('shipping_plan_id');
         $plan = \App\Models\ShippingPlan::findOrFail($planId);
         
-        if ($plan->status != 'ready_for_booking') {
-            return redirect()->route('vessel-bookings.index')->with('error', 'Rencana Kirim ini belum siap untuk dibooking. Pastikan Invoice dan Packing List sudah lengkap.');
+        // Backend verification for document completeness
+        if (!$plan->invoice || !$plan->packingList) {
+            return redirect()->route('vessel-bookings.index')
+                ->with('error', 'Dokumen belum lengkap! Pastikan Invoice (Ekspor) dan Packing List (Gudang) sudah terisi.');
         }
         
         if ($plan->booking) {
@@ -38,6 +40,12 @@ class VesselBookingController extends Controller
         ]);
 
         $plan = \App\Models\ShippingPlan::findOrFail($request->shipping_plan_id);
+
+        // Backend enforcement of gating rule before saving
+        if (!$plan->invoice || !$plan->packingList) {
+            return redirect()->route('vessel-bookings.index')
+                ->with('error', 'Gagal memproses. Booking kapal ditolak karena dokumen Invoice atau Packing List belum diisi.');
+        }
 
         \App\Models\VesselBooking::create([
             'shipping_plan_id' => $plan->id,
