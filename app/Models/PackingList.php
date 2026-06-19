@@ -20,4 +20,9 @@ class PackingList extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function items()
+    {
+        return $this->hasMany(PackingListItem::class);
+    }
 }

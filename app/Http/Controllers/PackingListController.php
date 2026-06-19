@@ -8,7 +8,7 @@ class PackingListController extends Controller
 {
     public function index()
     {
-        $shippingPlans = \App\Models\ShippingPlan::with('packingList', 'invoice', 'creator')->latest()->get();
+        $shippingPlans = \App\Models\ShippingPlan::with(['packingList.items', 'invoice', 'creator'])->latest()->get();
         return view('packing-lists.index', compact('shippingPlans'));
     }
 
@@ -29,21 +29,41 @@ class PackingListController extends Controller
         $request->validate([
             'shipping_plan_id' => 'required|exists:shipping_plans,id',
             'packing_list_number' => 'required|string|unique:packing_lists',
-            'packaging_details' => 'required|string',
-            'weight' => 'required|numeric|min:0.01',
-            'dimensions' => 'required|string',
+            'items' => 'required|array|min:1',
+            'items.*.order_number' => 'required|string',
+            'items.*.description' => 'required|string',
+            'items.*.length' => 'nullable|numeric',
+            'items.*.width' => 'nullable|numeric',
+            'items.*.height' => 'nullable|numeric',
+            'items.*.gross_weight' => 'required|numeric|min:0',
+            'items.*.net_weight' => 'required|numeric|min:0',
+            'items.*.quantity' => 'required|integer|min:1',
         ]);
 
         $plan = \App\Models\ShippingPlan::findOrFail($request->shipping_plan_id);
 
-        \App\Models\PackingList::create([
+        $totalWeight = 0;
+        $totalGrossWeight = 0;
+        $totalQty = 0;
+        
+        foreach ($request->items as $item) {
+            $totalWeight += floatval($item['net_weight']);
+            $totalGrossWeight += floatval($item['gross_weight']);
+            $totalQty += intval($item['quantity']);
+        }
+
+        $packingList = \App\Models\PackingList::create([
             'shipping_plan_id' => $plan->id,
             'packing_list_number' => $request->packing_list_number,
-            'packaging_details' => $request->packaging_details,
-            'weight' => $request->weight,
-            'dimensions' => $request->dimensions,
+            'packaging_details' => "Total Qty: " . $totalQty . " Pcs",
+            'weight' => $totalWeight,
+            'dimensions' => "Multiple Items",
             'created_by' => $request->user()->id,
         ]);
+
+        foreach ($request->items as $itemData) {
+            $packingList->items()->create($itemData);
+        }
 
         if ($plan->invoice) {
             $plan->update(['status' => 'ready_for_booking']);
