@@ -16,24 +16,43 @@
     <section id="basic-horizontal-layouts">
         <form action="{{ route('packing-lists.store') }}" method="POST">
             @csrf
-            <input type="hidden" name="shipping_plan_id" value="{{ $plan->id }}">
+            @if($plan)
+                <input type="hidden" name="shipping_plan_id" value="{{ $plan->id }}">
+            @endif
             
             <div class="row match-height">
                 <!-- Info Rencana Kirim -->
                 <div class="col-12 col-md-4">
                     <div class="card shadow-sm border-0">
                         <div class="card-header bg-light">
-                            <h5 class="mb-0">Rencana PPC</h5>
+                            <h5 class="mb-0">Rencana PPC / PO</h5>
                         </div>
                         <div class="card-body pt-3">
-                            <div class="mb-3">
-                                <label class="fw-bold text-muted small">Nomor PO</label>
-                                <div class="fs-5 font-bold text-primary">{{ $plan->po_number }}</div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="fw-bold text-muted small">Rencana Tanggal Kirim</label>
-                                <div class="fs-6 font-bold">{{ \Carbon\Carbon::parse($plan->shipping_date)->format('d M Y') }}</div>
-                            </div>
+                            @if($plan)
+                                <div class="mb-3">
+                                    <label class="fw-bold text-muted small">Nomor PO</label>
+                                    <div class="fs-5 font-bold text-primary">{{ $plan->po_number }}</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="fw-bold text-muted small">Rencana Tanggal Kirim</label>
+                                    <div class="fs-6 font-bold">{{ \Carbon\Carbon::parse($plan->shipping_date)->format('d M Y') }}</div>
+                                </div>
+                            @else
+                                <div class="mb-3">
+                                    <label for="po_number" class="fw-bold text-muted small">Nomor PO Baru</label>
+                                    <input type="text" id="po_number" class="form-control mt-1 @error('po_number') is-invalid @enderror" name="po_number" placeholder="Masukkan Nomor PO Baru" value="{{ old('po_number') }}" required>
+                                    @error('po_number')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="shipping_date" class="fw-bold text-muted small">Tanggal Rencana Kirim</label>
+                                    <input type="date" id="shipping_date" class="form-control mt-1 @error('shipping_date') is-invalid @enderror" name="shipping_date" value="{{ old('shipping_date') }}" required>
+                                    @error('shipping_date')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            @endif
                             <hr>
                             <div class="mb-3">
                                 <label for="packing_list_number" class="fw-bold text-muted small">Nomor Packing List / Weight Note</label>

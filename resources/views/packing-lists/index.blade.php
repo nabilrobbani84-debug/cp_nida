@@ -12,6 +12,10 @@
     
     <section class="section">
         <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center bg-transparent border-0 pb-0">
+                <h5 class="mb-0">Daftar PO & Packing List</h5>
+                <a href="{{ route('packing-lists.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i> Tambah Packing List</a>
+            </div>
             <div class="card-body">
                 @if(session('success'))
                     <div class="alert alert-success">{{ session('success') }}</div>

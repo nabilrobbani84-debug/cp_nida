@@ -15,10 +15,12 @@ class PackingListController extends Controller
     public function create(\Illuminate\Http\Request $request)
     {
         $planId = $request->get('shipping_plan_id');
-        $plan = \App\Models\ShippingPlan::findOrFail($planId);
-        
-        if ($plan->packingList) {
-            return redirect()->route('packing-lists.index')->with('error', 'Packing List sudah dibuat untuk Rencana Kirim ini.');
+        $plan = null;
+        if ($planId) {
+            $plan = \App\Models\ShippingPlan::findOrFail($planId);
+            if ($plan->packingList) {
+                return redirect()->route('packing-lists.index')->with('error', 'Packing List sudah dibuat untuk Rencana Kirim ini.');
+            }
         }
 
         return view('packing-lists.create', compact('plan'));
@@ -27,7 +29,6 @@ class PackingListController extends Controller
     public function store(\Illuminate\Http\Request $request)
     {
         $request->validate([
-            'shipping_plan_id' => 'required|exists:shipping_plans,id',
             'packing_list_number' => 'required|string|unique:packing_lists',
             'items' => 'required|array|min:1',
             'items.*.order_number' => 'required|string',
@@ -40,7 +41,23 @@ class PackingListController extends Controller
             'items.*.quantity' => 'required|integer|min:1',
         ]);
 
-        $plan = \App\Models\ShippingPlan::findOrFail($request->shipping_plan_id);
+        if ($request->filled('shipping_plan_id')) {
+            $plan = \App\Models\ShippingPlan::findOrFail($request->shipping_plan_id);
+        } else {
+            $request->validate([
+                'po_number' => 'required|string|unique:shipping_plans',
+                'shipping_date' => 'required|date',
+            ]);
+
+            $ppcUser = \App\Models\User::where('id_role', \App\Enums\RoleType::DivisiPPC->value)->first();
+
+            $plan = \App\Models\ShippingPlan::create([
+                'po_number' => $request->po_number,
+                'shipping_date' => $request->shipping_date,
+                'status' => 'waiting_invoice',
+                'created_by' => $ppcUser ? $ppcUser->id : $request->user()->id,
+            ]);
+        }
 
         $totalWeight = 0;
         $totalGrossWeight = 0;
