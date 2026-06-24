@@ -47,8 +47,32 @@
                             </td>
                             <td>
                                 @if($plan->invoice)
-                                    {{ $plan->invoice->invoice_number }} <br>
-                                    <small>{{ \Carbon\Carbon::parse($plan->invoice->invoice_date)->format('d M Y') }}</small>
+                                    <div><strong>{{ $plan->invoice->invoice_number }}</strong></div>
+                                    <div class="text-muted" style="font-size: 0.85rem; line-height: 1.2;">
+                                        <small>{{ \Carbon\Carbon::parse($plan->invoice->invoice_date)->format('d M Y') }}</small><br>
+                                        <button class="btn btn-sm btn-link text-info p-0 mt-1 border-0" style="font-size:0.8rem;" type="button" data-bs-toggle="collapse" data-bs-target="#inv-items-{{ $plan->id }}">
+                                            <i class="bi bi-eye"></i> Detail ({{ $plan->invoice->items->count() }} Item)
+                                        </button>
+                                        <div class="collapse mt-2" id="inv-items-{{ $plan->id }}">
+                                            <div class="card card-body p-2 border-0 bg-light-secondary shadow-none" style="font-size: 0.8rem; border-radius: 8px; max-width: 320px;">
+                                                @foreach($plan->invoice->items as $item)
+                                                    <div class="border-bottom pb-1 mb-1 text-dark">
+                                                        <strong>PO:</strong> {{ $item->po_no }} ({{ \Carbon\Carbon::parse($item->po_dated)->format('d/m/Y') }})<br>
+                                                        <strong>Desc:</strong> {{ $item->description }}<br>
+                                                        <strong>Qty:</strong> {{ $item->quantity }} Pcs<br>
+                                                        <strong>Price:</strong> €{{ number_format($item->basic_price, 2) }}<br>
+                                                        @if($item->material_surcharge > 0)
+                                                            <strong>Surcharge:</strong> €{{ number_format($item->material_surcharge, 2) }}<br>
+                                                        @endif
+                                                        <strong>Amount:</strong> €{{ number_format($item->amount, 2) }}
+                                                    </div>
+                                                @endforeach
+                                                <div class="pt-1 fw-bold text-primary">
+                                                    Total: €{{ number_format($plan->invoice->items->sum('amount'), 2) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @else
                                     <span class="text-muted">Belum ada</span>
                                 @endif
