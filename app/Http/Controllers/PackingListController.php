@@ -26,6 +26,19 @@ class PackingListController extends Controller
 
     public function store(\Illuminate\Http\Request $request)
     {
+        $data = $request->all();
+        if (isset($data['items']) && is_array($data['items'])) {
+            foreach ($data['items'] as &$item) {
+                $item['length'] = (isset($item['length']) && $item['length'] !== '') ? floatval($item['length']) : null;
+                $item['width'] = (isset($item['width']) && $item['width'] !== '') ? floatval($item['width']) : null;
+                $item['height'] = (isset($item['height']) && $item['height'] !== '') ? floatval($item['height']) : null;
+                $item['gross_weight'] = isset($item['gross_weight']) ? floatval($item['gross_weight']) : 0;
+                $item['net_weight'] = isset($item['net_weight']) ? floatval($item['net_weight']) : 0;
+                $item['quantity'] = isset($item['quantity']) ? intval($item['quantity']) : 1;
+            }
+        }
+        $request->merge($data);
+
         $request->validate([
             'shipping_plan_id' => 'required|exists:shipping_plans,id',
             'packing_list_number' => 'required|string|unique:packing_lists',
