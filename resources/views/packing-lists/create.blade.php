@@ -42,6 +42,15 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <hr>
+                            <div class="mb-3">
+                                <label class="fw-bold text-muted small d-block">Import dari Excel / CSV</label>
+                                <a href="/templates/packing_list_template.csv" class="btn btn-sm btn-outline-success w-100 mb-2" download>
+                                    <i class="bi bi-download me-1"></i> Unduh Template Excel (CSV)
+                                </a>
+                                <input type="file" id="csv_file" class="form-control form-control-sm" accept=".csv">
+                                <small class="text-muted" style="font-size: 0.75rem;">Unggah berkas CSV template yang telah diisi untuk memuat baris item otomatis.</small>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -122,33 +131,38 @@
         let rowIdx = 1;
         const container = document.getElementById('items-container');
         const btnAdd = document.getElementById('btn-add-item');
+        const fileInput = document.getElementById('csv_file');
 
         // Add dynamic row
         btnAdd.addEventListener('click', function() {
+            addRow();
+        });
+
+        function addRow(data = {}) {
             const tr = document.createElement('tr');
             tr.className = 'item-row';
             tr.innerHTML = `
                 <td>
-                    <input type="text" name="items[${rowIdx}][order_number]" class="form-control form-control-sm" placeholder="Order No" required>
+                    <input type="text" name="items[${rowIdx}][order_number]" class="form-control form-control-sm" placeholder="Order No" value="${data.order_number || ''}" required>
                 </td>
                 <td>
-                    <textarea name="items[${rowIdx}][description]" class="form-control form-control-sm" rows="1" placeholder="Deskripsi barang" required></textarea>
+                    <textarea name="items[${rowIdx}][description]" class="form-control form-control-sm" rows="1" placeholder="Deskripsi barang" required>${data.description || ''}</textarea>
                 </td>
                 <td>
                     <div class="input-group input-group-sm">
-                        <input type="number" name="items[${rowIdx}][length]" class="form-control" placeholder="P" step="0.1">
-                        <input type="number" name="items[${rowIdx}][width]" class="form-control" placeholder="L" step="0.1">
-                        <input type="number" name="items[${rowIdx}][height]" class="form-control" placeholder="T" step="0.1">
+                        <input type="number" name="items[${rowIdx}][length]" class="form-control" placeholder="P" step="0.1" value="${data.length || ''}">
+                        <input type="number" name="items[${rowIdx}][width]" class="form-control" placeholder="L" step="0.1" value="${data.width || ''}">
+                        <input type="number" name="items[${rowIdx}][height]" class="form-control" placeholder="T" step="0.1" value="${data.height || ''}">
                     </div>
                 </td>
                 <td>
-                    <input type="number" name="items[${rowIdx}][gross_weight]" class="form-control form-control-sm" placeholder="Gross" step="0.01" min="0" required>
+                    <input type="number" name="items[${rowIdx}][gross_weight]" class="form-control form-control-sm" placeholder="Gross" step="0.01" min="0" value="${data.gross_weight || ''}" required>
                 </td>
                 <td>
-                    <input type="number" name="items[${rowIdx}][net_weight]" class="form-control form-control-sm" placeholder="Net" step="0.01" min="0" required>
+                    <input type="number" name="items[${rowIdx}][net_weight]" class="form-control form-control-sm" placeholder="Net" step="0.01" min="0" value="${data.net_weight || ''}" required>
                 </td>
                 <td>
-                    <input type="number" name="items[${rowIdx}][quantity]" class="form-control form-control-sm" placeholder="Qty" min="1" required>
+                    <input type="number" name="items[${rowIdx}][quantity]" class="form-control form-control-sm" placeholder="Qty" min="1" value="${data.quantity || '1'}" required>
                 </td>
                 <td class="text-center">
                     <button type="button" class="btn btn-sm btn-link text-danger btn-remove-row">
@@ -159,7 +173,68 @@
             container.appendChild(tr);
             rowIdx++;
             updateRemoveButtons();
-        });
+        }
+
+        // CSV Parser
+        if (fileInput) {
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const text = evt.target.result;
+                    const lines = text.split(/\r\n|\n/);
+                    
+                    // Remove header
+                    if (lines.length > 0) lines.shift();
+
+                    container.innerHTML = '';
+                    rowIdx = 0;
+
+                    lines.forEach(line => {
+                        if (!line.trim()) return;
+                        
+                        // Parse simple CSV line
+                        let cols = [];
+                        let select = '';
+                        let inQuote = false;
+                        
+                        for (let i = 0; i < line.length; i++) {
+                            let char = line[i];
+                            if (char === '"' || char === "'") {
+                                inQuote = !inQuote;
+                            } else if (char === ',' && !inQuote) {
+                                cols.push(select.trim());
+                                select = '';
+                            } else {
+                                select += char;
+                            }
+                        }
+                        cols.push(select.trim());
+
+                        if (cols.length >= 7) {
+                            addRow({
+                                order_number: cols[0],
+                                description: cols[1],
+                                length: cols[2],
+                                width: cols[3],
+                                height: cols[4],
+                                gross_weight: cols[5],
+                                net_weight: cols[6],
+                                quantity: cols[7] || '1'
+                            });
+                        }
+                    });
+                    
+                    if (container.querySelectorAll('.item-row').length === 0) {
+                        rowIdx = 0;
+                        addRow();
+                    }
+                };
+                reader.readAsText(file);
+            });
+        }
 
         // Remove row event delegation
         container.addEventListener('click', function(e) {
