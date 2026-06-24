@@ -48,7 +48,7 @@
                                 <a href="/templates/packing_list_template.csv" class="btn btn-sm btn-outline-success w-100 mb-2" download>
                                     <i class="bi bi-download me-1"></i> Unduh Template Excel (CSV)
                                 </a>
-                                <input type="file" id="csv_file" class="form-control form-control-sm" accept=".csv">
+                                <input type="file" id="csv_file" class="form-control form-control-sm" accept=".csv, .xlsx">
                                 <small class="text-muted" style="font-size: 0.75rem;">Unggah berkas CSV template yang telah diisi untuk memuat baris item otomatis.</small>
                             </div>
                         </div>
@@ -126,6 +126,7 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         let rowIdx = 1;
@@ -175,7 +176,7 @@
             updateRemoveButtons();
         }
 
-        // CSV Parser
+        // Excel & CSV Parser using SheetJS
         if (fileInput) {
             fileInput.addEventListener('change', function(e) {
                 const file = e.target.files[0];
@@ -183,56 +184,47 @@
 
                 const reader = new FileReader();
                 reader.onload = function(evt) {
-                    const text = evt.target.result;
-                    const lines = text.split(/\r\n|\n/);
-                    
-                    // Remove header
-                    if (lines.length > 0) lines.shift();
-
-                    container.innerHTML = '';
-                    rowIdx = 0;
-
-                    lines.forEach(line => {
-                        if (!line.trim()) return;
+                    try {
+                        const data = new Uint8Array(evt.target.result);
+                        const workbook = XLSX.read(data, {type: 'array'});
+                        const firstSheetName = workbook.SheetNames[0];
+                        const worksheet = workbook.Sheets[firstSheetName];
                         
-                        // Parse simple CSV line
-                        let cols = [];
-                        let select = '';
-                        let inQuote = false;
+                        // Parse sheet to JSON array (2D array)
+                        const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
                         
-                        for (let i = 0; i < line.length; i++) {
-                            let char = line[i];
-                            if (char === '"' || char === "'") {
-                                inQuote = !inQuote;
-                            } else if (char === ',' && !inQuote) {
-                                cols.push(select.trim());
-                                select = '';
-                            } else {
-                                select += char;
-                            }
-                        }
-                        cols.push(select.trim());
+                        // Remove header row
+                        if (jsonData.length > 0) jsonData.shift();
 
-                        if (cols.length >= 7) {
-                            addRow({
-                                order_number: cols[0],
-                                description: cols[1],
-                                length: cols[2],
-                                width: cols[3],
-                                height: cols[4],
-                                gross_weight: cols[5],
-                                net_weight: cols[6],
-                                quantity: cols[7] || '1'
-                            });
-                        }
-                    });
-                    
-                    if (container.querySelectorAll('.item-row').length === 0) {
+                        container.innerHTML = '';
                         rowIdx = 0;
-                        addRow();
+
+                        jsonData.forEach(cols => {
+                            // Skip empty rows or header description
+                            if (!cols || cols.length < 2 || !cols[0]) return;
+
+                            addRow({
+                                order_number: String(cols[0] || '').trim(),
+                                description: String(cols[1] || '').trim(),
+                                length: cols[2] ? parseFloat(cols[2]) : '',
+                                width: cols[3] ? parseFloat(cols[3]) : '',
+                                height: cols[4] ? parseFloat(cols[4]) : '',
+                                gross_weight: cols[5] ? parseFloat(cols[5]) : '0',
+                                net_weight: cols[6] ? parseFloat(cols[6]) : '0',
+                                quantity: cols[7] ? parseInt(cols[7]) : '1'
+                            });
+                        });
+                        
+                        if (container.querySelectorAll('.item-row').length === 0) {
+                            rowIdx = 0;
+                            addRow();
+                        }
+                    } catch (error) {
+                        alert('Gagal membaca file. Pastikan format file sesuai dengan template.');
+                        console.error(error);
                     }
                 };
-                reader.readAsText(file);
+                reader.readAsArrayBuffer(file);
             });
         }
 
