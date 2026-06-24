@@ -59,7 +59,7 @@
                                                 <i class="bi bi-eye"></i> Detail ({{ $plan->packingList->items->count() }} Item)
                                             </button>
                                             <div class="collapse mt-2" id="pl-items-{{ $plan->id }}">
-                                                <div class="card card-body p-2 border-0 bg-light-secondary shadow-none" style="font-size: 0.8rem; border-radius: 8px;">
+                                                <div class="card card-body p-2 border-0 bg-light-secondary shadow-none" style="font-size: 0.8rem; border-radius: 8px; max-width: 320px;">
                                                     @foreach($plan->packingList->items as $item)
                                                         <div class="border-bottom pb-1 mb-1 text-dark">
                                                             <strong>PO/Order:</strong> {{ $item->order_number }}<br>
