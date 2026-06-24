@@ -157,3 +157,11 @@ body {
     border-left: 4px solid #6366f1 !important;
 }
 
+/* Responsive adjustments for Mobile Header */
+@media (max-width: 576px) {
+    .user-name {
+        display: none !important;
+    }
+}
+
+

@@ -3,14 +3,14 @@
 @section('title', 'Dashboard Pemantauan Ekspor')
 
 @section('content')
-<div class="page-heading">
-    <div class="d-flex justify-content-between align-items-center">
+<div class="page-heading mb-3">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
         <div>
-            <h3>Dashboard Pemantauan Ekspor</h3>
-            <p class="text-subtitle text-muted">Pemantauan Status Kesiapan Dokumen Ekspor Real-Time</p>
+            <h3 class="fs-4 fs-md-3 fw-bold text-dark mb-1">Dashboard Pemantauan Ekspor</h3>
+            <p class="text-subtitle text-muted mb-0" style="font-size: 0.9rem;">Pemantauan Status Kesiapan Dokumen Ekspor Real-Time</p>
         </div>
         <div>
-            <span class="badge bg-light-primary p-2">
+            <span class="badge bg-light-primary p-2 fs-7 fw-semibold">
                 <i class="bi bi-clock-history me-1"></i> Terakhir Diperbarui: {{ now()->format('H:i') }} WIB
             </span>
         </div>
@@ -24,14 +24,14 @@
             <div class="row">
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="card shadow-sm border-0 border-start border-4 border-indigo mb-4">
-                        <div class="card-body p-4">
-                            <div class="d-flex align-items-center justify-content-between">
+                        <div class="card-body p-3 p-md-4">
+                            <div class="d-flex align-items-center justify-content-between gap-2">
                                 <div>
-                                    <h6 class="text-muted font-semibold mb-1" style="font-size: 0.85rem;">Total Rencana Kirim</h6>
-                                    <h3 class="font-extrabold mb-0 text-dark">{{ $stats['total'] }}</h3>
+                                    <h6 class="text-muted font-semibold mb-1" style="font-size: 0.8rem; letter-spacing: 0.02em;">Total Rencana Kirim</h6>
+                                    <h3 class="font-extrabold mb-0 text-dark fs-4 fs-md-3">{{ $stats['total'] }}</h3>
                                 </div>
-                                <div class="stats-icon bg-light-primary" style="width: 3.5rem; height: 3.5rem; display: flex; align-items: center; justify-content: center; border-radius: 12px; background-color: rgba(79, 70, 229, 0.08) !important;">
-                                    <i class="bi bi-calendar-event text-primary fs-3" style="color: #4f46e5 !important;"></i>
+                                <div class="stats-icon bg-light-primary" style="width: 48px; height: 48px; min-width: 48px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background-color: rgba(79, 70, 229, 0.08) !important;">
+                                    <i class="bi bi-calendar-event text-primary fs-4" style="color: #4f46e5 !important;"></i>
                                 </div>
                             </div>
                         </div>
@@ -39,14 +39,14 @@
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="card shadow-sm border-0 border-start border-4 border-warning mb-4">
-                        <div class="card-body p-4">
-                            <div class="d-flex align-items-center justify-content-between">
+                        <div class="card-body p-3 p-md-4">
+                            <div class="d-flex align-items-center justify-content-between gap-2">
                                 <div>
-                                    <h6 class="text-muted font-semibold mb-1" style="font-size: 0.85rem;">Menunggu Invoice</h6>
-                                    <h3 class="font-extrabold mb-0 text-warning">{{ $stats['waiting_invoice'] }}</h3>
+                                    <h6 class="text-muted font-semibold mb-1" style="font-size: 0.8rem; letter-spacing: 0.02em;">Menunggu Invoice</h6>
+                                    <h3 class="font-extrabold mb-0 text-warning fs-4 fs-md-3">{{ $stats['waiting_invoice'] }}</h3>
                                 </div>
-                                <div class="stats-icon bg-light-warning" style="width: 3.5rem; height: 3.5rem; display: flex; align-items: center; justify-content: center; border-radius: 12px; background-color: rgba(245, 158, 11, 0.08) !important;">
-                                    <i class="bi bi-receipt text-warning fs-3" style="color: #d97706 !important;"></i>
+                                <div class="stats-icon bg-light-warning" style="width: 48px; height: 48px; min-width: 48px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background-color: rgba(245, 158, 11, 0.08) !important;">
+                                    <i class="bi bi-receipt text-warning fs-4" style="color: #d97706 !important;"></i>
                                 </div>
                             </div>
                         </div>
@@ -54,14 +54,14 @@
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="card shadow-sm border-0 border-start border-4 border-info mb-4">
-                        <div class="card-body p-4">
-                            <div class="d-flex align-items-center justify-content-between">
+                        <div class="card-body p-3 p-md-4">
+                            <div class="d-flex align-items-center justify-content-between gap-2">
                                 <div>
-                                    <h6 class="text-muted font-semibold mb-1" style="font-size: 0.85rem;">Menunggu Packing List</h6>
-                                    <h3 class="font-extrabold mb-0 text-info">{{ $stats['waiting_packing_list'] }}</h3>
+                                    <h6 class="text-muted font-semibold mb-1" style="font-size: 0.8rem; letter-spacing: 0.02em;">Menunggu Packing List</h6>
+                                    <h3 class="font-extrabold mb-0 text-info fs-4 fs-md-3">{{ $stats['waiting_packing_list'] }}</h3>
                                 </div>
-                                <div class="stats-icon bg-light-info" style="width: 3.5rem; height: 3.5rem; display: flex; align-items: center; justify-content: center; border-radius: 12px; background-color: rgba(59, 130, 246, 0.08) !important;">
-                                    <i class="bi bi-box-seam text-info fs-3" style="color: #2563eb !important;"></i>
+                                <div class="stats-icon bg-light-info" style="width: 48px; height: 48px; min-width: 48px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background-color: rgba(59, 130, 246, 0.08) !important;">
+                                    <i class="bi bi-box-seam text-info fs-4" style="color: #2563eb !important;"></i>
                                 </div>
                             </div>
                         </div>
@@ -69,14 +69,14 @@
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="card shadow-sm border-0 border-start border-4 border-success mb-4">
-                        <div class="card-body p-4">
-                            <div class="d-flex align-items-center justify-content-between">
+                        <div class="card-body p-3 p-md-4">
+                            <div class="d-flex align-items-center justify-content-between gap-2">
                                 <div>
-                                    <h6 class="text-muted font-semibold mb-1" style="font-size: 0.85rem;">Selesai Booking</h6>
-                                    <h3 class="font-extrabold mb-0 text-success">{{ $stats['booked'] }}</h3>
+                                    <h6 class="text-muted font-semibold mb-1" style="font-size: 0.8rem; letter-spacing: 0.02em;">Selesai Booking</h6>
+                                    <h3 class="font-extrabold mb-0 text-success fs-4 fs-md-3">{{ $stats['booked'] }}</h3>
                                 </div>
-                                <div class="stats-icon bg-light-success" style="width: 3.5rem; height: 3.5rem; display: flex; align-items: center; justify-content: center; border-radius: 12px; background-color: rgba(16, 185, 129, 0.08) !important;">
-                                    <i class="bi bi-ship text-success fs-3" style="color: #059669 !important;"></i>
+                                <div class="stats-icon bg-light-success" style="width: 48px; height: 48px; min-width: 48px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background-color: rgba(16, 185, 129, 0.08) !important;">
+                                    <i class="bi bi-ship text-success fs-4" style="color: #059669 !important;"></i>
                                 </div>
                             </div>
                         </div>
